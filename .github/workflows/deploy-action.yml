@@ -30,6 +30,12 @@ jobs:
         run: docker build . --file Dockerfile --cache-from $IMAGE:latest --tag $IMAGE:latest
       - name: Push
         run: docker push $IMAGE:latest
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: aussidavid/thelinkedpeople-monday.com-integration
+    steps:
       - name: Upload docker stack configuration
         uses: appleboy/scp-action@master
         with:
