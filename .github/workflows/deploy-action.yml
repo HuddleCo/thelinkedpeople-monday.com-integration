@@ -30,15 +30,15 @@ jobs:
         run: docker build . --file Dockerfile --cache-from $IMAGE:latest --tag $IMAGE:latest
       - name: Push
         run: docker push $IMAGE:latest
-      - name: copy file via ssh password
+      - name: Upload docker stack configuration
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           source: "docker-compose.prod.yml"
-          target: "~"
-      - name: executing remote ssh commands using password
+          target: "docker-compose.thelinkedpeople.prod.yml"
+      - name: Update and tidy up docker stack on remote host
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -47,5 +47,5 @@ jobs:
           envs: IMAGE
           script: |
             docker pull $IMAGE:latest &&
-            docker stack deploy --prune -c docker-compose.prod.yml thelinkedpeople;
-            rm -v docker-compose.prod.yml
+            docker stack deploy --prune -c docker-compose.thelinkedpeople.prod.yml thelinkedpeople;
+            rm -v docker-compose.thelinkedpeople.prod.yml
