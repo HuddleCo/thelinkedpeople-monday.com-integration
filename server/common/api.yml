@@ -1,0 +1,138 @@
+openapi: 3.0.1
+info:
+  title: thelinkedpeople-monday.com-integration
+  description: A TheLinkedPeople webhook client that integrates with Monday.com
+  version: 0.0.0
+tags:
+  - name: Connections
+    description: Connections made via TheLinkedPeople
+  - name: Specification
+    description: The swagger API specification
+  - name: System
+    description: Status status
+paths:
+  /webhook/{auth_token}:
+    post:
+      tags:
+        - Connections
+      description: Record a connection made via TheLinkedPeople
+      parameters:
+        - in: query
+          name: campaign_name
+          schema:
+            type: string
+          description: Name of the Campaign
+          example: "Campaign A"
+        - in: query
+          name: company_employee_count
+          schema:
+            type: integer
+          description: The number of employees
+          example: 5
+        - in: query
+          name: company_industry
+          schema:
+            type: string
+          description: Company industry sector
+          example: Hospitality
+        - in: query
+          name: company_location
+          schema:
+            type: string
+          description: Company location
+          example: Adelaide, Australia
+        - in: query
+          name: company_name
+          schema:
+            type: string
+          description: Company name
+          example: World Class Hospitality
+        - in: query
+          name: company_website
+          schema:
+            type: string
+          description: Company website
+          example: https://www.example.com
+        - in: query
+          name: connectedAt_date
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+          description: Date the connection was made in the format YYYY-MM-DD
+          example: "2022-04-04"
+        - in: query
+          name: profile_email
+          schema:
+            type: string
+          description: Connection email address
+          example: connection@example.com
+        - in: query
+          name: profile_full_name
+          schema:
+            type: string
+          description: Connections full name
+          example: John Smith
+        - in: query
+          name: profile_linkedin_url
+          schema:
+            type: string
+          description: URL of the connection's LinkedIn profile
+          example: https://www.example.com
+        - in: query
+          name: profile_phone_number
+          schema:
+            type: string
+          description: Phone number of the connection
+          example: 0412345678
+        - in: query
+          name: profile_title
+          schema:
+            type: string
+          description: Connections workplace title in the company_employee_count
+          example: Founder
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ok
+        401:
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: unrecognised Authorization token
+  /health:
+    get:
+      tags:
+        - System
+      responses:
+        200:
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ok
+
+  /api/spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification
+          content: {}
