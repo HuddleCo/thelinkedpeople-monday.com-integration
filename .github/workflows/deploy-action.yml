@@ -43,7 +43,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           source: "docker-compose.prod.yml"
-          target: "docker-compose.thelinkedpeople.prod.yml"
+          target: "thelinkedpeople-monday.com-integration"
       - name: Update and tidy up docker stack on remote host
         uses: appleboy/ssh-action@master
         with:
@@ -53,5 +53,5 @@ jobs:
           envs: IMAGE
           script: |
             docker pull $IMAGE:latest &&
-            docker stack deploy --prune -c docker-compose.thelinkedpeople.prod.yml thelinkedpeople;
-            rm -v docker-compose.thelinkedpeople.prod.yml
+            docker stack deploy --prune -c thelinkedpeople-monday.com-integration/docker-compose.prod.yml thelinkedpeople;
+            rm -rfv thelinkedpeople-monday.com-integration/docker-compose.prod.yml
