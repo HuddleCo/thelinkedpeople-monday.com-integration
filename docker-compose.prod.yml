@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  app:
+    image: aussidavid/thelinkedpeople-monday.com-integration
+    networks:
+      - proxy
+    deploy:
+      replicas: 2
+      update_config:
+          parallelism: 1
+          delay: 10s
+          order: start-first
+      resources:
+        limits:
+          memory: 128M
+
+networks:
+  proxy:
+    external: true
+    name: NPM_default
