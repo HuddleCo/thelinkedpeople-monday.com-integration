@@ -26,11 +26,26 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - name: Install
-        run: npm ci --ignore-scripts --no-audit
-      - name: Test
-        run: npm test
       - name: Build
         run: docker build . --file Dockerfile --cache-from $IMAGE:latest --tag $IMAGE:latest
       - name: Push
         run: docker push $IMAGE:latest
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "docker-compose.prod.yml"
+          target: "~"
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: IMAGE
+          script: |
+            docker pull $IMAGE:latest &&
+            docker stack deploy --prune -c docker-compose.prod.yml thelinkedpeople;
+            rm -v docker-compose.prod.yml
