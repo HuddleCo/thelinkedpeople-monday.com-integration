@@ -36,6 +36,7 @@ jobs:
     env:
       IMAGE: aussidavid/thelinkedpeople-monday.com-integration
     steps:
+      - uses: actions/checkout@v2
       - name: Upload docker stack configuration
         uses: appleboy/scp-action@master
         with:
