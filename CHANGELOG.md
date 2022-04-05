@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.1.2) (2022-04-05)
+
+
+### Bug Fixes
+
+* fix failing tests ([07672b8](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/07672b8d717b93947065bbdb792c95b27e8ecefb))
+* replace query params with body request params. ([e8bde6d](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/e8bde6de40f8eeb19832b0ff67131b3b7ef8aad3))
+* update test to run in ci environment ([1597480](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/159748057e4ba01f152c22734601d4d6bbf8f518))
+
 ### [0.1.1](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.1.1) (2022-04-05)
 
 

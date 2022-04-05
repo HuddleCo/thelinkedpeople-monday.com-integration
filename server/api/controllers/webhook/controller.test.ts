@@ -7,6 +7,7 @@ describe('Webhook', () => {
     it('should be ok', () =>
       request(Server)
         .post(`/webhook/${process.env.AUTH_TOKEN}`)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
         .expect(200)
         .expect('Content-Type', /json/)
         .then((r) => {
@@ -21,6 +22,7 @@ describe('Webhook', () => {
     it('should be unauthenticated', () =>
       request(Server)
         .post(`/webhook/FAKE-${process.env.AUTH_TOKEN}`)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
         .expect(401)
         .expect('Content-Type', /json/)
         .then((r) => {
