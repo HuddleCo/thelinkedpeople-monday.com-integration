@@ -4,7 +4,7 @@ import Server from '../../..';
 
 describe('Webhook', () => {
   context('when authenticated', () =>
-    it('should be ok', () =>
+    xit('should be ok', () =>
       request(Server)
         .post(`/webhook/${process.env.AUTH_TOKEN}`)
         .set('Content-Type', 'application/x-www-form-urlencoded')
