@@ -41,10 +41,6 @@ paths:
                   type: string
                   description: Company industry sector
                   example: Hospitality
-                company_location:
-                  type: string
-                  description: Company location
-                  example: Adelaide, Australia
                 company_name:
                   type: string
                   description: Company name
