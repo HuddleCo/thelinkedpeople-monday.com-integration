@@ -41,10 +41,6 @@ paths:
                   type: string
                   description: Company industry sector
                   example: Hospitality
-                company_location:
-                  type: string
-                  description: Company location
-                  example: Adelaide, Australia
                 company_name:
                   type: string
                   description: Company name
@@ -55,9 +51,9 @@ paths:
                   example: https://www.example.com
                 connectedAt_date:
                   type: string
-                  pattern: '^\d{4}-\d{2}-\d{2}$'
-                  description: Date the connection was made in the format YYYY-MM-DD
-                  example: "2022-04-04"
+                  pattern: '^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}$'
+                  description: Date the connection was made in the format YYYY-MM-DD hh:mm
+                  example: "2022-04-05 05:51"
                 profile_email:
                   type: string
                   description: Connection email address
