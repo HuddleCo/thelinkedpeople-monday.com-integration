@@ -17,6 +17,12 @@ paths:
         - Connections
       description: Record a connection made via TheLinkedPeople
       parameters:
+        - in: path
+          name: auth_token
+          required: true
+          schema:
+            type: string
+          description: Authentication Token to identify the user
         - in: query
           name: campaign_name
           schema:
