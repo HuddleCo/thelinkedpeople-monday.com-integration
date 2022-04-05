@@ -17,79 +17,67 @@ paths:
         - Connections
       description: Record a connection made via TheLinkedPeople
       parameters:
-        - in: query
-          name: campaign_name
+        - in: path
+          name: auth_token
+          required: true
           schema:
             type: string
-          description: Name of the Campaign
-          example: "Campaign A"
-        - in: query
-          name: company_employee_count
-          schema:
-            type: integer
-          description: The number of employees
-          example: 5
-        - in: query
-          name: company_industry
-          schema:
-            type: string
-          description: Company industry sector
-          example: Hospitality
-        - in: query
-          name: company_location
-          schema:
-            type: string
-          description: Company location
-          example: Adelaide, Australia
-        - in: query
-          name: company_name
-          schema:
-            type: string
-          description: Company name
-          example: World Class Hospitality
-        - in: query
-          name: company_website
-          schema:
-            type: string
-          description: Company website
-          example: https://www.example.com
-        - in: query
-          name: connectedAt_date
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}-\d{2}$'
-          description: Date the connection was made in the format YYYY-MM-DD
-          example: "2022-04-04"
-        - in: query
-          name: profile_email
-          schema:
-            type: string
-          description: Connection email address
-          example: connection@example.com
-        - in: query
-          name: profile_full_name
-          schema:
-            type: string
-          description: Connections full name
-          example: John Smith
-        - in: query
-          name: profile_linkedin_url
-          schema:
-            type: string
-          description: URL of the connection's LinkedIn profile
-          example: https://www.example.com
-        - in: query
-          name: profile_phone_number
-          schema:
-            type: string
-          description: Phone number of the connection
-          example: 0412345678
-        - in: query
-          name: profile_title
-          schema:
-            type: string
-          description: Connections workplace title in the company_employee_count
-          example: Founder
+          description: Authentication Token to identify the user
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                campaign_name:
+                  type: string
+                  description: Name of the Campaign
+                  example: "Campaign A"
+                company_employee_count:
+                  type: string
+                  description: The number of employees
+                  example: 5
+                company_industry:
+                  type: string
+                  description: Company industry sector
+                  example: Hospitality
+                company_location:
+                  type: string
+                  description: Company location
+                  example: Adelaide, Australia
+                company_name:
+                  type: string
+                  description: Company name
+                  example: World Class Hospitality
+                company_website:
+                  type: string
+                  description: Company website
+                  example: https://www.example.com
+                connectedAt_date:
+                  type: string
+                  pattern: '^\d{4}-\d{2}-\d{2}$'
+                  description: Date the connection was made in the format YYYY-MM-DD
+                  example: "2022-04-04"
+                profile_email:
+                  type: string
+                  description: Connection email address
+                  example: connection@example.com
+                profile_full_name:
+                  type: string
+                  description: Connections full name
+                  example: John Smith
+                profile_linkedin_url:
+                  type: string
+                  description: URL of the connection's LinkedIn profile
+                  example: https://www.example.com
+                profile_phone_number:
+                  type: string
+                  description: Phone number of the connection
+                  example: 0412345678
+                profile_title:
+                  type: string
+                  description: Connections workplace title in the company
+                  example: Founder
 
       responses:
         200:
