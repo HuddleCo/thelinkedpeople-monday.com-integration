@@ -1,6 +1,6 @@
 {
   "name": "thelinkedpeople-monday.com-integration",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A TheLinkedPeople webhook client that integrates with Monday.com.",
   "main": "dist/index.js",
   "scripts": {
