@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+env:
+  NAME: thelinkedpeople
+  IMAGE: aussidavid/thelinkedpeople-monday.com-integration
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -17,8 +21,6 @@ jobs:
   build:
     needs: [test]
     runs-on: ubuntu-latest
-    env:
-      IMAGE: aussidavid/thelinkedpeople-monday.com-integration
     steps:
       - uses: actions/checkout@v3
       - name: Login to Docker Hub
@@ -33,8 +35,6 @@ jobs:
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
-    env:
-      IMAGE: aussidavid/thelinkedpeople-monday.com-integration
     steps:
       - uses: actions/checkout@v3
       - name: Upload docker stack configuration
@@ -44,15 +44,15 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           source: "docker-compose.prod.yml"
-          target: "thelinkedpeople-monday.com-integration"
+          target: ${{ env.NAME }}
       - name: Update and tidy up docker stack on remote host
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          envs: IMAGE
+          envs: IMAGE, NAME
           script: |
             docker pull $IMAGE:latest &&
-            docker stack deploy --prune -c thelinkedpeople-monday.com-integration/docker-compose.prod.yml thelinkedpeople;
-            rm -rfv thelinkedpeople-monday.com-integration
+            docker stack deploy --prune -c "$NAME/docker-compose.prod.yml" "$NAME";
+            rm -rfv "$NAME"
