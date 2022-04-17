@@ -55,4 +55,4 @@ jobs:
           script: |
             docker pull $IMAGE:latest &&
             docker stack deploy --prune -c thelinkedpeople-monday.com-integration/docker-compose.prod.yml thelinkedpeople;
-            rm -rfv thelinkedpeople-monday.com-integration/docker-compose.prod.yml
+            rm -rfv thelinkedpeople-monday.com-integration
