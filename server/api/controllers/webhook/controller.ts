@@ -41,7 +41,7 @@ const doWork = (boardId: number, req: Request, res: Response) => {
       text: req.body.profile_email,
     },
     phone: {
-      phone: safePhoneNumber(req.body.profile_phone_number),
+      phone: safePhoneNumber(req.body.profile_phone_number || ''),
     },
     text2: req.body.company_name,
     dup__of_linkedin: {
@@ -51,14 +51,17 @@ const doWork = (boardId: number, req: Request, res: Response) => {
     dup__of_company: req.body.company_employee_count,
     dup__of_company_size: req.body.company_industry,
     date: {
-      date: safeDate(req.body.connectedAt_date, 'YYYY-MM-DD'),
+      date: safeDate(req.body.connectedAt_date || '', 'YYYY-MM-DD'),
     },
     text8: req.body.campaign_name,
   };
 
   const variables = {
     boardId,
-    itemName: itemName(req.body.profile_full_name, req.body.company_name),
+    itemName: itemName(
+      req.body.profile_full_name || '',
+      req.body.company_name || ''
+    ),
     columnValues: JSON.stringify(columnValues),
   };
 
