@@ -19,13 +19,8 @@ const query = `
 const itemName = (profileName: string, companyName: string) =>
   companyName.length ? `${profileName} - ${companyName}` : profileName;
 
-const safeDate = (date: string, format: string) => {
-  try {
-    return moment(date).format(format);
-  } catch (error) {
-    return '';
-  }
-};
+const safeDate = (date: string, format: string) =>
+  moment(date).isValid() ? moment(date).format(format) : '';
 
 const safePhoneNumber = (phone: string) =>
   phone.match(/[+0-9]/g) ? phone.replace(/ /g, '') : '';
