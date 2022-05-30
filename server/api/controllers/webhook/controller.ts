@@ -54,6 +54,10 @@ const doWork = (boardId: number, req: Request, res: Response) => {
       date: safeDate(req.body.connectedAt_date || '', 'YYYY-MM-DD'),
     },
     text8: req.body.campaign_name,
+    link_1: {
+      url: req.body.message_thread_url,
+      text: req.body.message_thread_url,
+    },
   };
 
   const variables = {
