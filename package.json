@@ -10,7 +10,7 @@
     "compile": "ts-node build.ts && tsc",
     "lint": "eslint -c .eslintrc.js \"{server, test}/**/*.{js,ts,tsx}\"",
     "lint:fix": "npm run lint -- --fix",
-    "test": "APP_PORT=4000 LOG_ENABLED=false HUDDLECO_AUTH_TOKEN=TOKEN THECOACHINGDIRECTORY_AUTH_TOKEN=TOKEN SALLY_A_CURTIS_AUTH_TOKEN=TOKEN mocha -r ts-node/register server/**/*.test.ts --exit --require ts-node/register --full-trace --timeout 2000 --bail",
+    "test": "APP_PORT=4000 LOG_ENABLED=false HUDDLECO_AUTH_TOKEN=TOKEN THECOACHINGDIRECTORY_AUTH_TOKEN=TOKEN SALLY_A_CURTIS_AUTH_TOKEN=TOKEN STUDIO_BAND_AUTH_TOKEN=TOKEN mocha -r ts-node/register server/**/*.test.ts --exit --require ts-node/register --full-trace --timeout 2000 --bail",
     "test:watch": "npm run test -- --watch-extensions ts --watch -R min",
     "test:debug": "npm run test -- --inspect-brk",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",

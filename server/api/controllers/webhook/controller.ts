@@ -3,6 +3,30 @@ import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
 
+type Record = { boardId: number; authToken: string; mondayAuthToken: string };
+const database: Array<Record> = [
+  {
+    boardId: 1964029256,
+    authToken: process.env.HUDDLECO_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 2706715613,
+    authToken: process.env.SALLY_A_CURTIS_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 2662488030,
+    authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 2114020595,
+    authToken: process.env.STUDIO_BAND_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.STUDIO_BAND_MONDAY_AUTH_TOKEN || '',
+  },
+];
+
 const query = `
   mutation (
     $boardId: Int!,
@@ -16,104 +40,90 @@ const query = `
     ) { id }
   }`;
 
-const itemName = (profileName: string, companyName: string) =>
-  companyName.length ? `${profileName} - ${companyName}` : profileName;
+const getRecord = (token: string | undefined): Record | undefined =>
+  database.find(({ authToken }) => authToken === token);
 
-const safeDate = (date: string, format: string) =>
-  moment(date).isValid() ? moment(date).format(format) : '';
+const status = (label: string | undefined) => ({ label: label || '' });
+const text = (value: string | undefined) => value || '';
+const link = (url: string | undefined) => ({ url: url || '', text: url || '' });
+const email = (email: string | undefined) => ({
+  email: email || '',
+  text: email || '',
+});
+const phone = (phone: string | undefined) => ({
+  phone: (phone || '').match(/[+0-9]/g) ? (phone || '').replace(/ /g, '') : '',
+});
+const date = (date: string | undefined) => ({
+  date: moment(date || '').isValid()
+    ? moment(date || '').format('YYYY-MM-DD')
+    : '',
+});
 
-const safePhoneNumber = (phone: string) =>
-  phone.match(/[+0-9]/g) ? phone.replace(/ /g, '') : '';
+const itemName = (
+  profileName: string | undefined,
+  companyName: string | undefined
+) =>
+  [profileName, companyName]
+    .filter((string) => (string || '').length)
+    .join(' - ');
 
-const doWork = (boardId: number, req: Request, res: Response) => {
+const doWork = (record: Record, req: Request) => {
   const columnValues = {
-    dup__of_relationship_to_me: {
-      label: 'Lead Gen',
-    },
-    text: req.body.profile_full_name,
-    dup__of_company8: req.body.profile_title,
-    link: {
-      url: req.body.profile_linkedin_url,
-      text: req.body.profile_linkedin_url,
-    },
-    email: {
-      email: req.body.profile_email,
-      text: req.body.profile_email,
-    },
-    phone: {
-      phone: safePhoneNumber(req.body.profile_phone_number || ''),
-    },
-    text2: req.body.company_name,
-    dup__of_linkedin: {
-      url: req.body.company_website,
-      text: req.body.company_website,
-    },
-    dup__of_company: req.body.company_employee_count,
-    dup__of_company_size: req.body.company_industry,
-    date: {
-      date: safeDate(req.body.connectedAt_date || '', 'YYYY-MM-DD'),
-    },
-    text8: req.body.campaign_name,
-    link_1: {
-      url: req.body.message_thread_url,
-      text: req.body.message_thread_url,
-    },
+    dup__of_relationship_to_me: status('Lead Gen'),
+    text: text(req.body.profile_full_name),
+    dup__of_company8: text(req.body.profile_title),
+    link: link(req.body.profile_linkedin_url),
+    email: email(req.body.profile_email),
+    phone: phone(req.body.profile_phone_number),
+    text2: text(req.body.company_name),
+    dup__of_linkedin: link(req.body.company_website),
+    dup__of_company: text(req.body.company_employee_count),
+    dup__of_company_size: text(req.body.company_industry),
+    date: date(req.body.connectedAt_date),
+    text8: text(req.body.campaign_name),
+    link_1: link(req.body.message_thread_url),
   };
 
   const variables = {
-    boardId,
-    itemName: itemName(
-      req.body.profile_full_name || '',
-      req.body.company_name || ''
-    ),
+    boardId: record.boardId,
+    itemName: itemName(req.body.profile_full_name, req.body.company_name),
     columnValues: JSON.stringify(columnValues),
   };
 
   l.debug(query);
   l.debug(variables);
 
-  axios({
+  return axios({
     url: 'https://api.monday.com/v2',
     method: 'post',
     headers: {
-      Authorization: process.env.MONDAY_AUTH_TOKEN || '',
+      Authorization: record.mondayAuthToken,
       'Content-Type': 'application/json',
     },
     data: { query, variables },
-  })
-    .then(({ data }) => {
-      l.debug(data);
-      res.status(200).json({ message: 'ok' });
-    })
-    .catch((error) => {
-      l.debug(error);
-      res.status(500).json({ message: error.message });
-    });
+  });
 };
-
-const authenticated = (authToken: string) =>
-  authToken === process.env.HUDDLECO_AUTH_TOKEN ||
-  authToken === process.env.THECOACHINGDIRECTORY_AUTH_TOKEN ||
-  authToken === process.env.SALLY_A_CURTIS_AUTH_TOKEN;
 
 export class Controller {
   post(req: Request, res: Response): void {
     l.debug(`body: ${JSON.stringify(req.body)}`);
 
-    if (!authenticated(req.params.authToken)) {
+    const record = getRecord(req.params.authToken);
+
+    if (!record) {
       res.status(401).json({ message: 'authToken unrecognised' });
       return;
     }
 
-    if (req.params.authToken === process.env.HUDDLECO_AUTH_TOKEN) {
-      doWork(1964029256, req, res);
-    } else if (
-      req.params.authToken === process.env.THECOACHINGDIRECTORY_AUTH_TOKEN
-    ) {
-      doWork(2662488030, req, res);
-    } else if (req.params.authToken === process.env.SALLY_A_CURTIS_AUTH_TOKEN) {
-      doWork(2706715613, req, res);
-    }
+    doWork(record, req)
+      .then((data) => {
+        l.debug(data);
+        res.status(200).json({ message: 'ok' });
+      })
+      .catch((error) => {
+        l.debug(error);
+        res.status(500).json({ message: error.message });
+      });
   }
 }
 export default new Controller();
