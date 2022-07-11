@@ -20,11 +20,6 @@ const database: Array<Record> = [
     authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
     mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
-  {
-    boardId: 2114020595,
-    authToken: process.env.STUDIO_BAND_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.STUDIO_BAND_MONDAY_AUTH_TOKEN || '',
-  },
 ];
 
 const query = `

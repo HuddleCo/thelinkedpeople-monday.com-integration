@@ -48,21 +48,6 @@ describe('Webhook', () => {
         }))
   );
 
-  context('when authenticated as Studio Band', () =>
-    xit('should be ok', () =>
-      request(Server)
-        .post(`/webhook/${process.env.STUDIO_BAND_AUTH_TOKEN}`)
-        .set('Content-Type', 'application/x-www-form-urlencoded')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((r) => {
-          expect(r.body)
-            .to.be.an('object')
-            .that.has.property('message')
-            .equal('ok');
-        }))
-  );
-
   context('when authenticated as The Coaching Directory', () =>
     xit('should be ok', () =>
       request(Server)
