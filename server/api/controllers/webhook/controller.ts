@@ -18,7 +18,7 @@ const database: Array<Record> = [
   {
     boardId: 2662488030,
     authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
   {
     boardId: 2114020595,
