@@ -22,7 +22,7 @@ const database: Array<Record> = [
   },
   {
     boardId: 2890960150,
-    authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
+    authToken: process.env.KRISTI_AUTH_TOKEN || '',
     mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
 ];
