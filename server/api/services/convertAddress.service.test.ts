@@ -1,5 +1,6 @@
 import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { after } from 'mocha';
 
 import { geocode } from './convertAddress.service';
 
@@ -9,8 +10,34 @@ describe('ConvertAddress Service', () => {
   it('should not be null', () => expect(geocode).not.to.be.null);
   it('convertAddress should be a function', () =>
     expect(geocode.convertAddress).to.be.a('function'));
-  it('should work', async () =>
+  it('should throw an error when there is not auth token', async () =>
     await expect(geocode.convertAddress('Adelaide')).to.be.rejectedWith(/403/));
+
+  context('when there is a valid auth token', () => {
+    const env = process.env;
+
+    before(() => {
+      process.env = { TOMTOM_API_KEY: 'DPyjUL0gJc2edmvD2hnFjP32tYgtSdKn' };
+    });
+
+    after(() => {
+      process.env = env;
+    });
+
+    it('should not throw an error', async () =>
+      await expect(geocode.convertAddress('Adelaide')).to.not.be.rejectedWith(
+        /403/
+      ));
+
+    it('should have a latitude', async () =>
+      expect(await geocode.convertAddress('Adelaide')).to.have.property('lat'));
+    it('should have a longitude', async () =>
+      expect(await geocode.convertAddress('Adelaide')).to.have.property('lng'));
+    it('should have an address', async () =>
+      expect(await geocode.convertAddress('Adelaide')).to.have.property(
+        'address'
+      ));
+  });
 });
 
 // import axios, { AxiosRequestConfig } from 'axios';
