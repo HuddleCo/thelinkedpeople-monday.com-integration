@@ -2,30 +2,40 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
+import { geocode } from './convertAddress';
 
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
   {
-    boardId: 1964029256,
-    authToken: process.env.HUDDLECO_AUTH_TOKEN || '',
+    boardId: 3165097755,
+    authToken: process.env.AUTH_TOKEN || '',
     mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2706715613,
-    authToken: process.env.SALLY_A_CURTIS_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2890900002,
-    authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2890960150,
-    authToken: process.env.KRISTI_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
 ];
+
+const getIdFromName = (name: string, record: Record) => {
+  const query = `query {
+    boards(ids:[3165097755]) {
+      name
+      columns {
+        id,
+        title
+      }
+    }
+  }`;
+
+  const res = axios({
+    url: 'https://api.monday.com/v2',
+    method: 'get',
+    headers: {
+      Authorization: record.mondayAuthToken,
+      'Content-Type': 'application/json',
+    },
+    data: JSON.stringify({ query: query }),
+  });
+  console.log(name);
+  console.log('RESAB ', res);
+};
 
 const query = `
   mutation (
@@ -67,7 +77,8 @@ const itemName = (
     .filter((string) => (string || '').length)
     .join(' - ');
 
-const doWork = (record: Record, req: Request) => {
+const doWork = async (record: Record, req: Request) => {
+  getIdFromName('Nish', record);
   const columnValues = {
     dup__of_relationship_to_me: status('Lead Gen'),
     text: text(req.body.profile_full_name),
@@ -82,6 +93,7 @@ const doWork = (record: Record, req: Request) => {
     date: date(req.body.connectedAt_date),
     text8: text(req.body.campaign_name),
     link_1: link(req.body.message_thread_url),
+    location_1: await geocode.convertAddress(req.body.company_location),
   };
 
   const variables = {
