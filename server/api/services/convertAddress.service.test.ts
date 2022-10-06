@@ -42,5 +42,8 @@ describe('ConvertAddress Service', () => {
         lat: '123.456',
         lng: '-123.456',
       }));
+
+    it('should return empty object when address is undefined', async () =>
+      expect(await geocode.convertAddress(undefined)).to.deep.equals({}));
   });
 });
