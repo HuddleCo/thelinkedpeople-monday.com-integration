@@ -2,46 +2,25 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
+import allData from './getData';
 
-type Record = { boardId: number; authToken: string; mondayAuthToken: string };
-const database: Array<Record> = [
-  {
-    boardId: 1964029256,
-    authToken: process.env.HUDDLECO_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2706715613,
-    authToken: process.env.SALLY_A_CURTIS_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2890900002,
-    authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2890960150,
-    authToken: process.env.KRISTI_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
-  },
-];
+type Record = { board_ID: string; username: string; api_key: string };
 
 const query = `
   mutation (
-    $boardId: Int!,
+    $board_ID: Int!,
     $itemName: String!,
     $columnValues: JSON!
   ) {
     create_item (
-      board_id: $boardId,
+      board_id: $board_ID,
       item_name: $itemName, 
       column_values: $columnValues
     ) { id }
   }`;
 
-const getRecord = (token: string | undefined): Record | undefined =>
-  database.find(({ authToken }) => authToken === token);
+const getRecord = async (token: string | undefined) =>
+  (await allData).find(({ username }) => username === token);
 
 const status = (label: string | undefined) => ({ label: label || '' });
 const text = (value: string | undefined) => value || '';
@@ -85,7 +64,7 @@ const doWork = (record: Record, req: Request) => {
   };
 
   const variables = {
-    boardId: record.boardId,
+    board_ID: record.board_ID,
     itemName: itemName(req.body.profile_full_name, req.body.company_name),
     columnValues: JSON.stringify(columnValues),
   };
@@ -97,7 +76,7 @@ const doWork = (record: Record, req: Request) => {
     url: 'https://api.monday.com/v2',
     method: 'post',
     headers: {
-      Authorization: record.mondayAuthToken,
+      Authorization: record.api_key,
       'Content-Type': 'application/json',
     },
     data: { query, variables },
@@ -105,13 +84,14 @@ const doWork = (record: Record, req: Request) => {
 };
 
 export class Controller {
-  post(req: Request, res: Response): void {
+  async post(req: Request, res: Response): Promise<void> {
     l.debug(`body: ${JSON.stringify(req.body)}`);
-
-    const record = getRecord(req.params.authToken);
+    l.debug(`username: ${JSON.stringify(req.params)}`);
+    const record = await getRecord(req.params.authToken);
+    l.debug(`RECORD: ${JSON.stringify(record)}`);
 
     if (!record) {
-      res.status(401).json({ message: 'authToken unrecognised' });
+      res.status(401).json({ message: 'username unrecognised' });
       return;
     }
 

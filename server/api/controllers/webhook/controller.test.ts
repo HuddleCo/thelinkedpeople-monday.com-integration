@@ -74,7 +74,7 @@ describe('Webhook', () => {
           expect(r.body)
             .to.be.an('object')
             .that.has.property('message')
-            .equal('authToken unrecognised');
+            .equal('username unrecognised');
         }));
   });
 });
