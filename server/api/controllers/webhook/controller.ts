@@ -2,28 +2,14 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
+import { columnNameToId } from '../../services/columnNameToID.service';
 
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
   {
-    boardId: 1964029256,
-    authToken: process.env.HUDDLECO_AUTH_TOKEN || '',
+    boardId: 3165097755,
+    authToken: process.env.AUTH_TOKEN || '',
     mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2706715613,
-    authToken: process.env.SALLY_A_CURTIS_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2890900002,
-    authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
-  },
-  {
-    boardId: 2890960150,
-    authToken: process.env.KRISTI_AUTH_TOKEN || '',
-    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
 ];
 
@@ -67,21 +53,32 @@ const itemName = (
     .filter((string) => (string || '').length)
     .join(' - ');
 
-const doWork = (record: Record, req: Request) => {
+const doWork = async (record: Record, req: Request) => {
+  await columnNameToId('Relationship', record);
   const columnValues = {
-    dup__of_relationship_to_me: status('Lead Gen'),
-    text: text(req.body.profile_full_name),
-    dup__of_company8: text(req.body.profile_title),
-    link: link(req.body.profile_linkedin_url),
-    email: email(req.body.profile_email),
-    phone: phone(req.body.profile_phone_number),
-    text2: text(req.body.company_name),
-    dup__of_linkedin: link(req.body.company_website),
-    dup__of_company: text(req.body.company_employee_count),
-    dup__of_company_size: text(req.body.company_industry),
-    date: date(req.body.connectedAt_date),
-    text8: text(req.body.campaign_name),
-    link_1: link(req.body.message_thread_url),
+    [await columnNameToId('Source', record)]: status('Lead Gen'),
+    [await columnNameToId('Full Name', record)]: text(
+      req.body.profile_full_name
+    ),
+    [await columnNameToId('Title', record)]: text(req.body.profile_title),
+    [await columnNameToId('LinkedIn', record)]: link(
+      req.body.profile_linkedin_url
+    ),
+    [await columnNameToId('Email', record)]: email(req.body.profile_email),
+    [await columnNameToId('Phone', record)]: phone(
+      req.body.profile_phone_number
+    ),
+    [await columnNameToId('Company', record)]: text(req.body.company_name),
+    [await columnNameToId('Website', record)]: link(req.body.company_website),
+    [await columnNameToId('Company Size', record)]: text(
+      req.body.company_employee_count
+    ),
+    [await columnNameToId('Industry', record)]: text(req.body.company_industry),
+    [await columnNameToId('Coffee & Kisses', record)]: date(
+      req.body.connectedAt_date
+    ),
+    [await columnNameToId('Campaign', record)]: text(req.body.campaign_name),
+    [await columnNameToId('Inbox', record)]: link(req.body.message_thread_url),
   };
 
   const variables = {
@@ -116,8 +113,7 @@ export class Controller {
     }
 
     doWork(record, req)
-      .then((data) => {
-        l.debug(data);
+      .then(() => {
         res.status(200).json({ message: 'ok' });
       })
       .catch((error) => {
