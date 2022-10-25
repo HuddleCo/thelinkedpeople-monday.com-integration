@@ -13,30 +13,6 @@ const database: Array<Record> = [
   },
 ];
 
-const getIdFromName = (name: string, record: Record) => {
-  const query = `query {
-    boards(ids:[3165097755]) {
-      name
-      columns {
-        id,
-        title
-      }
-    }
-  }`;
-
-  const res = axios({
-    url: 'https://api.monday.com/v2',
-    method: 'get',
-    headers: {
-      Authorization: record.mondayAuthToken,
-      'Content-Type': 'application/json',
-    },
-    data: JSON.stringify({ query: query }),
-  });
-  console.log(name);
-  console.log('RESAB ', res);
-};
-
 const query = `
   mutation (
     $boardId: Int!,
@@ -78,7 +54,6 @@ const itemName = (
     .join(' - ');
 
 const doWork = async (record: Record, req: Request) => {
-  getIdFromName('Nish', record);
   const columnValues = {
     dup__of_relationship_to_me: status('Lead Gen'),
     text: text(req.body.profile_full_name),
