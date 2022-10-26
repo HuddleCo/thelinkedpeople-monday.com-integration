@@ -11,19 +11,18 @@ class Geocode {
     });
 
   convertAddress = async (address: string | undefined) => {
-    if (address !== undefined) {
-      if (process.env.TOMTOM_API_KEY) {
-        const res = await this.request(address);
-        return {
-          lat: res.data.results[0].position.lat,
-          lng: res.data.results[0].position.lon,
-          address: address,
-        };
-      } else {
-        throw new Error('TOMTOM API Key missing!');
-      }
-    } else {
+    if (address == undefined) {
       return {};
+    }
+    if (process.env.TOMTOM_API_KEY) {
+      const res = await this.request(address);
+      return {
+        lat: res.data.results[0].position.lat,
+        lng: res.data.results[0].position.lon,
+        address: address,
+      };
+    } else {
+      throw new Error('TOMTOM API Key missing!');
     }
   };
 }
