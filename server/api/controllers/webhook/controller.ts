@@ -7,9 +7,24 @@ import { geocode } from '../../services/convertAddress.service';
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
   {
-    boardId: 3165097755,
-    authToken: process.env.AUTH_TOKEN || '',
+    boardId: 1964029256,
+    authToken: process.env.HUDDLECO_AUTH_TOKEN || '',
     mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 2706715613,
+    authToken: process.env.SALLY_A_CURTIS_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 2890900002,
+    authToken: process.env.THECOACHINGDIRECTORY_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 2890960150,
+    authToken: process.env.KRISTI_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
 ];
 

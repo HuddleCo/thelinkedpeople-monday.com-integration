@@ -10,13 +10,11 @@ class Geocode {
         method: 'GET',
         params: { key: process.env.TOMTOM_API_KEY },
       });
-      const returnVal = {
+      return {
         lat: res.data.results[0].position.lat,
         lng: res.data.results[0].position.lon,
         address: address,
       };
-
-      return returnVal;
     } else {
       return {};
     }
