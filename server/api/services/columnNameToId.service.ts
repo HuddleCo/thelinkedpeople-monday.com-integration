@@ -23,14 +23,6 @@ export const columnNameToId = async (columnName: string, record: Record) => {
     data: { query },
   });
 
-  // console.log(columnName);
-  // console.log(
-  //   'CHECKPOINT',
-  //   res.data.data.boards[0].columns.find(
-  //     (element: Query) => element.title === columnName
-  //   ).id
-  // );
-
   return res.data.data.boards[0].columns.find(
     (element: Query) => element.title === columnName
   ).id;
