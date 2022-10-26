@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
 import { columnNameToId } from '../../services/columnNameToID.service';
+import addressToGeolocation from '../../services/addressToGeolocation.service';
 
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
@@ -24,6 +25,16 @@ const database: Array<Record> = [
   {
     boardId: 2890960150,
     authToken: process.env.KRISTI_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 3525533978,
+    authToken: process.env.ELIZABETH_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 3525601347,
+    authToken: process.env.VANESSA_AUTH_TOKEN || '',
     mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
 ];
@@ -59,6 +70,15 @@ const date = (date: string | undefined) => ({
     ? moment(date || '').format('YYYY-MM-DD')
     : '',
 });
+const location = async (address: string | undefined) => {
+  const { latitude, longitude } = await addressToGeolocation(address);
+
+  return {
+    lon: longitude,
+    lat: latitude,
+    address,
+  };
+};
 
 const itemName = (
   profileName: string | undefined,
@@ -94,6 +114,9 @@ const doWork = async (record: Record, req: Request) => {
     ),
     [await columnNameToId('Campaign', record)]: text(req.body.campaign_name),
     [await columnNameToId('Inbox', record)]: link(req.body.message_thread_url),
+    [await columnNameToId('Location', record)]: await location(
+      req.body.company_location
+    ),
   };
 
   const variables = {

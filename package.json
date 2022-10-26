@@ -1,6 +1,6 @@
 {
   "name": "thelinkedpeople-monday.com-integration",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "A TheLinkedPeople webhook client that integrates with Monday.com.",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "compile": "ts-node build.ts && tsc",
     "lint": "eslint -c .eslintrc.js \"{server, test}/**/*.{js,ts,tsx}\"",
     "lint:fix": "npm run lint -- --fix",
-    "test": "APP_PORT=4000 LOG_ENABLED=false HUDDLECO_AUTH_TOKEN=HUDDLECO_AUTH_TOKEN THECOACHINGDIRECTORY_AUTH_TOKEN=THECOACHINGDIRECTORY_AUTH_TOKEN SALLY_A_CURTIS_AUTH_TOKEN=SALLY_A_CURTIS_AUTH_TOKEN MONDAY_AUTH_TOKEN=MONDAY_AUTH_TOKEN THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN=THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN mocha -r ts-node/register server/**/*.test.ts --exit --require ts-node/register --full-trace --timeout 2000 --bail",
+    "test": "APP_PORT=4000 LOG_ENABLED=false HUDDLECO_AUTH_TOKEN=HUDDLECO_AUTH_TOKEN THECOACHINGDIRECTORY_AUTH_TOKEN=THECOACHINGDIRECTORY_AUTH_TOKEN SALLY_A_CURTIS_AUTH_TOKEN=SALLY_A_CURTIS_AUTH_TOKEN MONDAY_AUTH_TOKEN=MONDAY_AUTH_TOKEN THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN=THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN TOMTOM_API_KEY=TOMTOM_API_KEY mocha -r ts-node/register server/**/*.test.ts --exit --require ts-node/register --full-trace --timeout 2000 --bail",
     "test:watch": "npm run test -- --watch-extensions ts --watch -R min",
     "test:debug": "npm run test -- --inspect-brk",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
@@ -21,7 +21,7 @@
     "release:major": "standard-version --release-as major"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "standard-version": {
     "skip": {
@@ -31,45 +31,53 @@
   "dependencies": {
     "@sentry/node": "^6.19.6",
     "@sentry/tracing": "^6.19.6",
+    "@types/sinon": "^10.0.13",
     "axios": "^0.26",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "dotenv": "^14.0.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "express-openapi-validator": "^4.13.3",
     "moment": "^2.29.2",
-    "pino": "^7.4.1"
+    "mustache": "^4.2.0",
+    "pino": "^7.4.1",
+    "sinon": "^14.0.1"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.0.3",
+    "@commitlint/config-conventional": "^17.2.0",
     "@types/axios": "^0.14.0",
-    "@types/chai": "^4.2.22",
-    "@types/express": "^4.17.13",
+    "@types/axios-mock-adapter": "^1.10.0",
+    "@types/chai": "^4.3.4",
+    "@types/chai-as-promised": "^7.1.5",
+    "@types/express": "^4.17.14",
     "@types/mocha": "^9.0.0",
+    "@types/mustache": "^4.2.2",
     "@types/node": "^17.0.8",
     "@types/pino": "^7.0.4",
     "@types/request": "^2.48.8",
     "@types/shelljs": "^0.8.11",
     "@types/supertest": "^2.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.9.1",
-    "@typescript-eslint/parser": "^5.9.1",
-    "chai": "^4.3.4",
-    "commitlint": "^17.0.3",
-    "eslint": "^8.6.0",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "axios-mock-adapter": "^1.21.2",
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "commitlint": "^17.2.0",
+    "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "mocha": "^9.0.0",
     "ngrok": "^4.2.2",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.20",
     "nyc": "^15.1.0",
     "pino-pretty": "^7.2.0",
     "prettier": "^2.5.0",
     "request": "^2.88.2",
     "shelljs": "^0.8.5",
     "standard-version": "^9.3.2",
-    "supertest": "^6.1.6",
+    "supertest": "^6.3.1",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.8.4"
   },
   "author": "David Milanese <milanese.david@gmail.com>"
 }
