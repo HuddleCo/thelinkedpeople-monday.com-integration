@@ -6,6 +6,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
 import { geocode } from './convertAddress.service';
+import sinon from 'sinon';
 
 chai.use(chaiAsPromised);
 
@@ -14,6 +15,20 @@ describe('ConvertAddress Service', () => {
   it('convertAddress should be a function', () =>
     expect(geocode.convertAddress).to.be.a('function'));
 
+  context('when stubbing environment variables', () => {
+    const sandbox = sinon.createSandbox();
+    beforeEach(() => {
+      sandbox.stub(process, 'env').value({ TOMTOM_API_KEY: undefined });
+    });
+
+    it('should throw an error if TOMTOM_API_KEY is missing', async () =>
+      expect(geocode.convertAddress('abc')).to.eventually.be.rejectedWith(
+        'TOMTOM API Key missing!'
+      ));
+    afterEach(() => {
+      sandbox.restore();
+    });
+  });
   context('when stubbing the web requests', () => {
     let mock: MockAdapter;
     beforeEach(() => {
