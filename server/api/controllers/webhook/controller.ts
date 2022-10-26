@@ -2,9 +2,8 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
-import allData from './getData';
-
-type Record = { board_ID: string; username: string; api_key: string };
+import get_users_Record from './getUsersRecord';
+import { Record } from './Record';
 
 const query = `
   mutation (
@@ -20,7 +19,7 @@ const query = `
   }`;
 
 const getRecord = async (token: string | undefined) =>
-  (await allData).find(({ username }) => username === token);
+  (await get_users_Record()).find(({ username }) => username === token);
 
 const status = (label: string | undefined) => ({ label: label || '' });
 const text = (value: string | undefined) => value || '';
@@ -86,9 +85,7 @@ const doWork = (record: Record, req: Request) => {
 export class Controller {
   async post(req: Request, res: Response): Promise<void> {
     l.debug(`body: ${JSON.stringify(req.body)}`);
-    l.debug(`username: ${JSON.stringify(req.params)}`);
     const record = await getRecord(req.params.authToken);
-    l.debug(`RECORD: ${JSON.stringify(record)}`);
 
     if (!record) {
       res.status(401).json({ message: 'username unrecognised' });
