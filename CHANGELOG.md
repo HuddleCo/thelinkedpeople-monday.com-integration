@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.4.0) (2022-11-10)
+
+### Features
+
+* add connection for vanessa and elizabeth ([912f340](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/912f3407ab8bd0cd4d615fc290a0cdb88ef90c2c))
+
 ### [0.3.1](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.3.1) (2022-04-17)
 
 ## [0.3.0](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.3.0) (2022-04-16)

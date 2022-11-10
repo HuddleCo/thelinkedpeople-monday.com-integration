@@ -74,6 +74,10 @@ paths:
                   type: string
                   description: Connections workplace title in the company
                   example: Founder
+                message_thread_url:
+                  type: string
+                  description: The URL of the inbox for the connection
+                  example: https://www.example.com/inbox/123
 
       responses:
         200:
