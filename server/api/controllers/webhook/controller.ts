@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
-import { geocode } from '../../services/convertAddress.service';
+import addressToGeolocation from '../../services/convertAddress.service';
 
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
@@ -70,7 +70,7 @@ const date = (date: string | undefined) => ({
     : '',
 });
 const location = async (address: string | undefined) => {
-  const { latitude, longitude } = await geocode.convertAddress(address);
+  const { latitude, longitude } = await addressToGeolocation(address);
 
   return {
     lon: longitude,

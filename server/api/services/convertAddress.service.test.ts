@@ -5,14 +5,14 @@ import { afterEach, beforeEach } from 'mocha';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-import { geocode } from './convertAddress.service';
+import service from './convertAddress.service';
 import sinon from 'sinon';
 
 chai.use(chaiAsPromised);
 
 describe('ConvertAddress Service', () => {
   context('when stubbing environment variables', () => {
-    const subject = () => geocode.convertAddress('Adelaide');
+    const subject = () => service('Adelaide');
 
     const sandbox = sinon.createSandbox();
     beforeEach(() => {
@@ -27,7 +27,7 @@ describe('ConvertAddress Service', () => {
   });
 
   context('when the response has results', () => {
-    const subject = () => geocode.convertAddress('Adelaide');
+    const subject = () => service('Adelaide');
 
     let mock: MockAdapter;
     beforeEach(() => {
@@ -63,7 +63,7 @@ describe('ConvertAddress Service', () => {
       }));
 
     context('when the response has no results', () => {
-      const subject = () => geocode.convertAddress('Adelaide');
+      const subject = () => service('Adelaide');
 
       let mock: MockAdapter;
       beforeEach(() => {
@@ -85,7 +85,7 @@ describe('ConvertAddress Service', () => {
     });
 
     context('when the address is underfined', () => {
-      const subject = () => geocode.convertAddress(undefined);
+      const subject = () => service(undefined);
       it('should return empty object when address is undefined', async () =>
         expect(await subject()).to.deep.equals({
           latitude: '',

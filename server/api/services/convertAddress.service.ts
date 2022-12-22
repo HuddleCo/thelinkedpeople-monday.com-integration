@@ -46,15 +46,11 @@ const positions = async (address: string, url: string, apiKey: string) => {
   return results;
 };
 
-class Geocode {
-  convertAddress = async (
-    address: string | undefined
-  ): Promise<{ latitude: string; longitude: string }> =>
-    getLocation(
-      address,
-      `https://api.tomtom.com/search/2/geocode/{{address}}.json`,
-      process.env.TOMTOM_API_KEY
-    );
-}
-
-export const geocode = new Geocode();
+export default async (
+  address: string | undefined
+): Promise<{ latitude: string; longitude: string }> =>
+  getLocation(
+    address,
+    `https://api.tomtom.com/search/2/geocode/{{address}}.json`,
+    process.env.TOMTOM_API_KEY
+  );
