@@ -21,10 +21,14 @@ class Geocode {
     }
 
     const { data } = await this.request(address);
+    if (!data.results.length) {
+      return {};
+    }
+
     return {
       lat: data.results[0].position.lat,
       lng: data.results[0].position.lon,
-      address: address,
+      address,
     };
   };
 }
