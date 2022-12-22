@@ -21,7 +21,7 @@
     "release:major": "standard-version --release-as major"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "standard-version": {
     "skip": {
