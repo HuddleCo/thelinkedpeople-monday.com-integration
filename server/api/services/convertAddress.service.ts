@@ -14,16 +14,18 @@ class Geocode {
     if (address == undefined) {
       return {};
     }
-    if (process.env.TOMTOM_API_KEY) {
-      const res = await this.request(address);
-      return {
-        lat: res.data.results[0].position.lat,
-        lng: res.data.results[0].position.lon,
-        address: address,
-      };
-    } else {
-      throw new Error('TOMTOM API Key missing!');
+    if (!process.env.TOMTOM_API_KEY) {
+      throw new Error(
+        'TOMTOM_API_KEY is missing. Please check that TOMTOM_API_KEY is added in the environment.'
+      );
     }
+
+    const { data } = await this.request(address);
+    return {
+      lat: data.results[0].position.lat,
+      lng: data.results[0].position.lon,
+      address: address,
+    };
   };
 }
 

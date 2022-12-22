@@ -23,7 +23,7 @@ describe('ConvertAddress Service', () => {
 
     it('should throw an error if TOMTOM_API_KEY is missing', async () =>
       expect(geocode.convertAddress('abc')).to.eventually.be.rejectedWith(
-        'TOMTOM API Key missing!'
+        /TOMTOM_API_KEY/
       ));
     afterEach(() => {
       sandbox.restore();
