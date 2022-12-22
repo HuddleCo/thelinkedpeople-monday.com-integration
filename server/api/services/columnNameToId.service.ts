@@ -29,10 +29,12 @@ const request = (authorization: string, boardId: number) =>
     },
   });
 
-export default async (columnName: string, record: Record) => {
+export default async (columnName: string, record: Record): Promise<string> => {
   const { data } = await request(record.mondayAuthToken, record.boardId);
 
-  return data.data.boards[0].columns.find(
-    (element: Query) => element.title === columnName
-  ).id;
+  return (
+    data.data.boards[0].columns.find(
+      (element: Query) => element.title === columnName
+    )?.id || ''
+  );
 };
