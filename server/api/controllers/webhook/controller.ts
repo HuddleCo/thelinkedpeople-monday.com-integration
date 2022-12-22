@@ -69,6 +69,15 @@ const date = (date: string | undefined) => ({
     ? moment(date || '').format('YYYY-MM-DD')
     : '',
 });
+const location = async (address: string | undefined) => {
+  const { latitude, longitude } = await geocode.convertAddress(address);
+
+  return {
+    lon: longitude,
+    lat: latitude,
+    address,
+  };
+};
 
 const itemName = (
   profileName: string | undefined,
@@ -93,7 +102,7 @@ const doWork = async (record: Record, req: Request) => {
     date: date(req.body.connectedAt_date),
     text8: text(req.body.campaign_name),
     link_1: link(req.body.message_thread_url),
-    location_1: await geocode.convertAddress(req.body.company_location),
+    location_1: await location(req.body.company_location),
   };
 
   const variables = {

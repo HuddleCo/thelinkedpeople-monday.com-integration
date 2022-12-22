@@ -12,6 +12,8 @@ chai.use(chaiAsPromised);
 
 describe('ConvertAddress Service', () => {
   context('when stubbing environment variables', () => {
+    const subject = () => geocode.convertAddress('Adelaide');
+
     const sandbox = sinon.createSandbox();
     beforeEach(() => {
       sandbox.stub(process, 'env').value({ TOMTOM_API_KEY: undefined });
@@ -21,12 +23,12 @@ describe('ConvertAddress Service', () => {
     });
 
     it('should throw an error if TOMTOM_API_KEY is missing', async () =>
-      expect(
-        geocode.convertAddress('123 Smith Street, Townsville')
-      ).to.eventually.be.rejectedWith(/TOMTOM_API_KEY/));
+      expect(subject()).to.eventually.be.rejectedWith(/TOMTOM/));
   });
 
   context('when the response has results', () => {
+    const subject = () => geocode.convertAddress('Adelaide');
+
     let mock: MockAdapter;
     beforeEach(() => {
       mock = new MockAdapter(axios);
@@ -54,14 +56,15 @@ describe('ConvertAddress Service', () => {
       mock.restore();
     });
 
-    it('should return the first geolocation', () =>
-      expect(geocode.convertAddress('Adelaide')).to.eventually.deep.equals({
-        address: 'Adelaide',
-        lat: '123.456',
-        lng: '-123.456',
+    it('should return the first geolocation', async () =>
+      expect(await subject()).to.deep.equals({
+        latitude: '123.456',
+        longitude: '-123.456',
       }));
 
     context('when the response has no results', () => {
+      const subject = () => geocode.convertAddress('Adelaide');
+
       let mock: MockAdapter;
       beforeEach(() => {
         mock = new MockAdapter(axios);
@@ -74,13 +77,20 @@ describe('ConvertAddress Service', () => {
         mock.restore();
       });
 
-      it('should return an empty object ', () =>
-        expect(geocode.convertAddress('Adelaide')).to.eventually.deep.equals(
-          {}
-        ));
+      it('should return an empty object ', async () =>
+        expect(await subject()).to.deep.equals({
+          latitude: '',
+          longitude: '',
+        }));
     });
 
-    it('should return empty object when address is undefined', async () =>
-      expect(await geocode.convertAddress(undefined)).to.deep.equals({}));
+    context('when the address is underfined', () => {
+      const subject = () => geocode.convertAddress(undefined);
+      it('should return empty object when address is undefined', async () =>
+        expect(await subject()).to.deep.equals({
+          latitude: '',
+          longitude: '',
+        }));
+    });
   });
 });
