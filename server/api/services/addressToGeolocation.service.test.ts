@@ -5,7 +5,7 @@ import { afterEach, beforeEach } from 'mocha';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-import service from './convertAddress.service';
+import service from './addressToGeolocation.service';
 import sinon from 'sinon';
 
 chai.use(chaiAsPromised);

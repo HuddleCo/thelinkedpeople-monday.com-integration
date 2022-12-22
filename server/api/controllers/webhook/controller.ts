@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
-import addressToGeolocation from '../../services/convertAddress.service';
+import addressToGeolocation from '../../services/addressToGeolocation.service';
 
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
