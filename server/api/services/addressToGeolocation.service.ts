@@ -28,8 +28,8 @@ const getLocation = async (
   }
 
   return {
-    latitude: results[0].position.lat,
-    longitude: results[0].position.lon,
+    latitude: results[0]?.position?.lat || '',
+    longitude: results[0]?.position?.lon || '',
   };
 };
 
