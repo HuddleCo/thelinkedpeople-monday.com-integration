@@ -1,29 +1,38 @@
 import axios from 'axios';
-type Record = { boardId: number; authToken: string; mondayAuthToken: string };
+import { Record } from '../types';
+
 type Query = { id: string; title: string };
 
-export const columnNameToId = async (columnName: string, record: Record) => {
-  const query = `
-    query {
-        boards(ids:[3165097755]) {
-          columns {
-            id,
-            title
-          }
-        }
-    }`;
+const query = `
+  query($boardId: Int!) {
+    boards(ids: [$boardId]) {
+      columns {
+        id,
+        title
+      }
+    }
+  }`;
 
-  const res = await axios({
+const request = (authorization: string, boardId: number) =>
+  axios({
     url: 'https://api.monday.com/v2',
     method: 'post',
     headers: {
-      Authorization: record.mondayAuthToken,
+      Authorization: authorization,
       'Content-Type': 'application/json',
     },
-    data: { query },
+    data: {
+      query,
+      variables: {
+        boardId,
+      },
+    },
   });
 
-  return res.data.data.boards[0].columns.find(
+export default async (columnName: string, record: Record) => {
+  const { data } = await request(record.mondayAuthToken, record.boardId);
+
+  return data.data.boards[0].columns.find(
     (element: Query) => element.title === columnName
   ).id;
 };

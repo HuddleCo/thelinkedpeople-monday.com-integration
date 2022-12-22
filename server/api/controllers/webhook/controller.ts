@@ -2,10 +2,10 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
-import { columnNameToId } from '../../services/columnNameToId.service';
+import columnNameToId from '../../services/columnNameToId.service';
 import addressToGeolocation from '../../services/addressToGeolocation.service';
+import { Record } from '../../types';
 
-type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
   {
     boardId: 1964029256,
