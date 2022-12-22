@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
-import { columnNameToId } from '../../services/columnNameToID.service';
+import { columnNameToId } from '../../services/columnNameToId.service';
 import addressToGeolocation from '../../services/addressToGeolocation.service';
 
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
@@ -151,7 +151,8 @@ export class Controller {
     }
 
     doWork(record, req)
-      .then(() => {
+      .then((data) => {
+        l.debug(data);
         res.status(200).json({ message: 'ok' });
       })
       .catch((error) => {
