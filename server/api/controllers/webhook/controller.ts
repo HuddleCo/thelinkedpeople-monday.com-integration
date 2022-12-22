@@ -2,6 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
 import l from '../../../common/logger';
+import addressToGeolocation from '../../services/addressToGeolocation.service';
 
 type Record = { boardId: number; authToken: string; mondayAuthToken: string };
 const database: Array<Record> = [
@@ -68,6 +69,15 @@ const date = (date: string | undefined) => ({
     ? moment(date || '').format('YYYY-MM-DD')
     : '',
 });
+const location = async (address: string | undefined) => {
+  const { latitude, longitude } = await addressToGeolocation(address);
+
+  return {
+    lon: longitude,
+    lat: latitude,
+    address,
+  };
+};
 
 const itemName = (
   profileName: string | undefined,
@@ -77,7 +87,7 @@ const itemName = (
     .filter((string) => (string || '').length)
     .join(' - ');
 
-const doWork = (record: Record, req: Request) => {
+const doWork = async (record: Record, req: Request) => {
   const columnValues = {
     dup__of_relationship_to_me: status('Lead Gen'),
     text: text(req.body.profile_full_name),
@@ -92,6 +102,7 @@ const doWork = (record: Record, req: Request) => {
     date: date(req.body.connectedAt_date),
     text8: text(req.body.campaign_name),
     link_1: link(req.body.message_thread_url),
+    location_1: await location(req.body.company_location),
   };
 
   const variables = {
