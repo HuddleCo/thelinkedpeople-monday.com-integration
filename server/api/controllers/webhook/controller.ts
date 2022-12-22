@@ -26,6 +26,16 @@ const database: Array<Record> = [
     authToken: process.env.KRISTI_AUTH_TOKEN || '',
     mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
   },
+  {
+    boardId: 3525533978,
+    authToken: process.env.ELIZABETH_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
+  },
+  {
+    boardId: 3525601347,
+    authToken: process.env.VANESSA_AUTH_TOKEN || '',
+    mondayAuthToken: process.env.THECOACHINGDIRECTORY_MONDAY_AUTH_TOKEN || '',
+  },
 ];
 
 const query = `
