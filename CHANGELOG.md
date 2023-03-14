@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.0](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.4.1) (2022-11-21)
+
+### Features
+
+* feat: add support for JACKIE ([586bec7](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/586bec7df06b0c0d5212cf1e48f7517f8f54872a))
+
 ### [0.4.1](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.4.1) (2022-11-21)
 
 ### Features
