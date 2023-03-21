@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.3](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.5.1...v0.5.3) (2023-03-21)
+
+
+### Features
+
+* add temporary solution for connection specific campaigns to a board ([aad37eb](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/aad37ebd97b906a39ce7875495eaf100c05e96e8))
+* remove campaign switching ([bebf696](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/bebf69600cc11c765d84af6bdb789b9307ff0327))
+
 ### [0.5.2](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.5.1...v0.5.2) (2023-03-21)
 
 ### [0.5.1](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.4.1...v0.5.1) (2023-03-21)
