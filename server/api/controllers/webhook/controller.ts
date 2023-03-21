@@ -60,7 +60,6 @@ const getRecord = (token: string | undefined): Record | undefined =>
 
 const status = (label: string | undefined) => ({ label: label || '' });
 const text = (value: string | undefined) => value || '';
-const number = (value: string | undefined) => Number(value || '0');
 const link = (url: string | undefined) => ({ url: url || '', text: url || '' });
 const email = (email: string | undefined) => ({
   email: email || '',
@@ -101,7 +100,7 @@ const doWork = (record: Record, req: Request) => {
   };
 
   const variables = {
-    boardId: getBoardId(record, number(req.body.campaign_id)),
+    boardId: record.boardId,
     itemName: itemName(req.body.profile_full_name, req.body.company_name),
     columnValues: JSON.stringify(columnValues),
   };
@@ -118,19 +117,6 @@ const doWork = (record: Record, req: Request) => {
     },
     data: { query, variables },
   });
-};
-
-const getBoardId = (record: Record, campaignId: number): number => {
-  if (record.authToken === process.env.THECOACHINGDIRECTORY_AUTH_TOKEN) {
-    return (
-      {
-        1677616814706: 4105061336, // HR MEL - MID MARCH => TCD Corp Clients
-        1678403916424: 4105061336, // PROC SPEC - Aus - => TCD Corp Clients
-      }[campaignId] || record.boardId
-    );
-  } else {
-    return record.boardId;
-  }
 };
 
 export class Controller {
