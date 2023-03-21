@@ -135,8 +135,8 @@ const getBoardId = (record: Record, campaignId: number): number => {
   if (record.authToken === process.env.THECOACHINGDIRECTORY_AUTH_TOKEN) {
     return (
       {
-        1677616814706: 4105058746, // HR MEL - MID MARCH
-        1678403916424: 4105058746, // PROC SPEC - Aus -
+        1677616814706: 4105061336, // HR MEL - MID MARCH => TCD Corp Clients
+        1678403916424: 4105061336, // PROC SPEC - Aus - => TCD Corp Clients
       }[campaignId] || record.boardId
     );
   } else {
