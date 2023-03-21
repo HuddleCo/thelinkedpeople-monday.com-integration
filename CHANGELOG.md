@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.4.1...v0.5.1) (2023-03-21)
+
+
+### Features
+
+* add support for JACKIE ([586bec7](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/586bec7df06b0c0d5212cf1e48f7517f8f54872a))
+* add temporary solution for connection specific campaigns to a board ([aad37eb](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/commit/aad37ebd97b906a39ce7875495eaf100c05e96e8))
+
 ### [0.5.0](https://github.com/HuddleCo/thelinkedpeople-monday.com-integration/compare/v0.1.0...v0.4.1) (2022-11-21)
 
 ### Features
