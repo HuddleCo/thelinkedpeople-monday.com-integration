@@ -163,6 +163,7 @@ export class Controller {
       .catch((error) => {
         l.debug(error);
         res.status(500).json({ message: error.message });
+        throw error;
       });
   }
 }
